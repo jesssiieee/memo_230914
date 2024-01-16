@@ -164,7 +164,7 @@
 			
 			// 2) AJAX: 화면이동 X(call-back 함수에서 이동), 응답값: JSON
 			let url = $(this).attr("action"); // 현재의 form태그에서 action 속성을 보겠다.
-			alert(url); ///user/sign-up
+			console.log(url); ///user/sign-up
 			
 			// form 태그의 name 속성 사용(비밀번호 확인은 서버에 넘어가면 안되므로, name속성 없음)
 			let params = $(this).serialize(); // 폼 태그에 있는 name 속성과 값으로 파라미터를 구성
