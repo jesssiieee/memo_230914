@@ -40,4 +40,9 @@ public class PostBO {
 		postmapper.insertPost(userId, subject, content, imagePath);
 	}
 	
+	// 글 목록 가져오기 
+	public Post getPostByPostIdUserId(int postId, int userId) {
+		return postmapper.selectPostByPostIdUserId(postId, userId);
+	}
+	
 }
