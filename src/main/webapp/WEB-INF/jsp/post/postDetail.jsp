@@ -102,7 +102,7 @@
 			
 		}); // savetBtn
 		
-		$("#deleteBtn").on('click', function() {
+ 		$("#deleteBtn").on('click', function() {
 			// alert("삭제버튼");
 			
 			let postId = $(this).data("post-id");
@@ -113,7 +113,7 @@
 				//request
 				type:"DELETE"
 				, url:"/post/delete"
-				, data:{"postId", postId}
+				, data:{"postId":postId}
 				// response
 				, success:function(data) {
 					if(data.code == 200) {
@@ -129,7 +129,7 @@
 				
 			}); // deleteBtn ajax
 			
-		}); // deleteBtn
+		});  // deleteBtn 
 		
 	}); // ready
 

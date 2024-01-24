@@ -95,6 +95,8 @@
  			`post`
  		WHERE
  			`id` = #{postId}
+ 		AND
+ 			`userId` = #{userId}
  		
  	</delete>
  

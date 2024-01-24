@@ -86,19 +86,23 @@ public class PostBO {
 		
 	}
 	
-	public void deletePostById(int postId) {
+	public void deletePostById(int postId, int userId) {
 		
 		// 삭제할 사진이 있는지 없는지 판단
 		// 1) 기존 글 가져오기
-		Post post = (Post) postmapper.selectPostList();
-		String imagePath = null;
+		Post post = postmapper.selectPostByPostIdUserId(postId, userId);
+		if (post == null) {
+			log.info("[글 수정] post is null. postId: {}", postId);
+			return;
+		}
+		
 		// 만약 사진이 존재한다면. 
 		if (post.getImagePath() != null) {
 			// 사진 삭제
 			fileManagerService.deleteFile(post.getImagePath());
 		}
 		
-		postmapper.deletePostById(postId);
+		postmapper.deletePostById(postId, userId);
 		
 	}
 	
