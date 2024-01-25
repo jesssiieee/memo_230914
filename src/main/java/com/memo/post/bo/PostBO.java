@@ -86,23 +86,25 @@ public class PostBO {
 		
 	}
 	
-	public void deletePostById(int postId, int userId) {
+	public void deletePostByIdUserId(int postId, int userId) {
 		
-		// 삭제할 사진이 있는지 없는지 판단
-		// 1) 기존 글 가져오기
+		// 기존글이 있는지 확인
 		Post post = postmapper.selectPostByPostIdUserId(postId, userId);
 		if (post == null) {
-			log.info("[글 수정] post is null. postId: {}", postId);
+			log.info("[글 삭제] post is null. postId: {}, userId: {}", postId, userId);
 			return;
 		}
 		
-		// 만약 사진이 존재한다면. 
-		if (post.getImagePath() != null) {
+		// DB 삭제
+		// 삭제된 행의 개수
+		int deleteRowCount = postmapper.deletePostById(postId);
+		
+		// 이미지가 존재하고 DB 삭제도 성공했다면
+		if (deleteRowCount > 0 && post.getImagePath() != null) {
 			// 사진 삭제
 			fileManagerService.deleteFile(post.getImagePath());
 		}
 		
-		postmapper.deletePostById(postId, userId);
 		
 	}
 	

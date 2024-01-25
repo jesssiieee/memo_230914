@@ -89,14 +89,12 @@
  			
  	</update>
  	
- 	<delete id="deletePostById">
+ 	<delete id="deletePostById" parameterType="int">
  		
  		DELETE FROM 
  			`post`
  		WHERE
  			`id` = #{postId}
- 		AND
- 			`userId` = #{userId}
  		
  	</delete>
  

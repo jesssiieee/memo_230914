@@ -52,6 +52,15 @@ public class PostRestController {
 		return result;
 	}
 	
+	/**
+	 * 글 수정 API
+	 * @param postId
+	 * @param subject
+	 * @param content
+	 * @param file
+	 * @param session
+	 * @return
+	 */
 	@PutMapping("/update")
 	public Map<String, Object> update(
 			@RequestParam("postId") int postId, // jsp let으로 받아온 변수와 이름이 같아야한다.
@@ -81,7 +90,7 @@ public class PostRestController {
 		int userId = (int)session.getAttribute("userId");
 		
 		// db delete
-		postBO.deletePostById(postId, userId);
+		postBO.deletePostByIdUserId(postId, userId);
 		
 		Map<String, Object> result = new HashMap<>();
 		result.put("code", 200);

@@ -17,8 +17,8 @@ public class FileManagerService {
 
 	// 실제 업로드 된 이미지가 저장될 경로(서버)
 	// ★★★ \\images 뒤에 '/'를 붙여줘야 뒤에 추가 경로가 붙었을 때 정상작동
-//	public static final String FILE_UPLOAD_PATH = "D:\\Limhyeona\\6_spring_project\\MEMO\\memo_workspace\\images/";
-	public static final String FILE_UPLOAD_PATH = "/Users/jessie/Desktop/jessie/6_springproject/memo/memo_workspace/images/";
+	public static final String FILE_UPLOAD_PATH = "D:\\Limhyeona\\6_spring_project\\MEMO\\memo_workspace\\images/";
+//	public static final String FILE_UPLOAD_PATH = "/Users/jessie/Desktop/jessie/6_springproject/memo/memo_workspace/images/";
 	
 	// input: File 원본, userLoginId(폴더명)
 	// ouput: 이미지 경로
