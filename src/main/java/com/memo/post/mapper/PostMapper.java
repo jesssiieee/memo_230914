@@ -16,20 +16,30 @@ public interface PostMapper {
 	public List<Map<String, Object>> selectPostList();
 
 	// input: userId, output: List<Post>
-	public List<Post> selectPostListByuserId(int userId);
+	public List<Post> selectPostListByuserId(
+			@Param("userId") int userId,
+			@Param("standardId") Integer standardId,
+			@Param("direction") String direction,
+			@Param("limit") int limit
+	);
+	
+	public int selectPostIdByUserIdSort(
+			@Param("userId") int userId,
+			@Param("sort") String sort
+	);
 	
 	// input: subject, content output: X
-		public void insertPost(
+	public void insertPost(
 			@Param("userId") int userId,
 			@Param("subject") String subject, 
 			@Param("content") String content,
 			@Param("imagePath") String imagePath
-			);
+	);
 		
 	public Post selectPostByPostIdUserId(
 			@Param("postId") int postId, 
 			@Param("userId") int userId
-		);
+	);
 
 	
 	public void updatePostByPostId(

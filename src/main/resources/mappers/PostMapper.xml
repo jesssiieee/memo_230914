@@ -27,9 +27,47 @@
  			`post`
  		WHERE
  			`userId` = #{userId}
+ 			
+ 		<if test="direction == 'next'">
+ 		<![CDATA[
+ 		AND
+ 			`id` < #{standardId}
+ 		]]>
  		ORDER BY 
  			`id`
  		DESC
+ 		
+ 		</if>
+ 		
+ 		<if test="direction == 'prev'">
+ 		<![CDATA[
+ 		AND
+ 			`id` > #{standardId}
+ 		]]>
+ 		</if>
+
+		<if test="direction == null">
+ 		ORDER BY 
+ 			`id`
+ 		DESC
+		</if>
+
+ 		<!-- #{userId} = '1'처럼 따옴표가 붙는거고 , ${limit}처럼 $로 붙여줘야 작은 따옴표가 안 붙고 숫자로 가져올 수 있다. -->
+ 		LIMIT
+ 			${limit}
+ 	
+ 	</select>
+ 	
+ 	<select id="selectPostIdByUserIdSort" parameterType="map" resultType="int">
+ 	
+ 		SELECT
+ 			`id`
+ 		FROM 
+ 			`post`
+ 		WHERE
+ 			`userId` = #{userId}
+ 		ORDER BY `id` ${sort}
+ 		LIMIT 1
  	
  	</select>
  	

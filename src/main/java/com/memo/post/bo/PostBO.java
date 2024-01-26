@@ -1,5 +1,6 @@
 package com.memo.post.bo;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.memo.common.FileManagerService;
 import com.memo.post.domain.Post;
 import com.memo.post.mapper.PostMapper;
+import com.mysql.cj.x.protobuf.MysqlxCrud.Collection;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,10 +28,52 @@ public class PostBO {
 	@Autowired
 	private FileManagerService fileManagerService;
 
-	// userId 기준으로 글 목록 
+	// 페이징 관련 필드 
+	private static final int POST_MAX_SIZE = 3;
+	
+	// userId 기준으로 글 목록 + 페이징
 	// input: userId(로그인 된 사람), output: List<Post>
-	public List<Post> getPostListByuserId(int userId) {
-		return postmapper.selectPostListByuserId(userId);
+	public List<Post> getPostListByUserId(int userId, Integer prevId, Integer nextId) {
+		
+		// 게시글 번호 => 10 9 8 | 7 6 5 | 4 3 2 | 1
+		// 만약 | 4 3 2 | 페이지에 있을 때
+		// 1) 다음 => 2보다 작은 3개를 "DESC" 정렬
+		// 2) 이전 => 4보다 큰 3개를 "ASC" 정렬 => list.reverse(); => 7 6 5
+		// 3) 페이징 정보 없음(= 처음 들어온 경우) 최신순 3개 DESC
+		
+		// 사용될 id는 하나만 들어오기 때문에 prevId, nextId를 기준삼은 아이디 한 개 선언
+		Integer standardId = null; // 기준이 되는 postId
+		String direction = null;   // 방향
+		
+		if (prevId != null) { // 2) 이전
+			standardId = prevId;
+			direction = "prev";
+			
+			List<Post> postList = postmapper.selectPostListByuserId(userId, standardId, direction, POST_MAX_SIZE);
+			
+			// reverse list = 5 6 7 = > 7 6 5
+			Collections.reverse(postList); // 뒤집고 결과를 저장까지
+			return postList;
+			
+		} else if (nextId != null) { //  1) 다음
+			standardId = nextId;
+			direction = "next";
+		} 
+		
+		// 페이징 정보 없음, 1) 다음
+		return postmapper.selectPostListByuserId(userId, standardId, direction, POST_MAX_SIZE);
+	}
+	
+	// 이전 페이지의 마지막 인가?
+	public boolean isPrevLastPageByUserId(int userId, int prevId) {
+		int postId = postmapper.selectPostIdByUserIdSort(userId, "DESC");
+		return postId == prevId; // 같으면 끝, 마지막이다.
+	}
+	
+	// 다음 페이지의 마지막 인가?
+	public boolean isNextLastPageByUserId(int userId, int nextId) {
+		int postId = postmapper.selectPostIdByUserIdSort(userId, "ASC");
+		return postId == nextId;
 	}
 	
 	// 글쓰기 - DB insert
