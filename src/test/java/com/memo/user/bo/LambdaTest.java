@@ -20,12 +20,23 @@ public class LambdaTest {
 		
 	}
 	
-	@Test
+	// @Test
 	void 람다테스트2() {
 		List<String> fruits = List.of("apple", "banana", "bbbb");
 		fruits = fruits
 		.stream()
 		.map(fruit -> fruit.toUpperCase())
+		.collect(Collectors.toList()); // stream to list
+		
+		log.info(fruits.toString());
+	}
+	
+	@Test
+	void 메소드레퍼런스() {
+		List<String> fruits = List.of("apple", "banana", "bbbb");
+		fruits = fruits
+		.stream()
+		.map(String::toUpperCase) // 각 요소에 메소드 적용
 		.collect(Collectors.toList()); // stream to list
 		
 		log.info(fruits.toString());
